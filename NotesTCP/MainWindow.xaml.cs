@@ -20,9 +20,114 @@ namespace NotesTCP
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private Dictionary<Button, Notes> notesKeyDict = new Dictionary<Button,Notes>();
+		private int buttonCount = 0;
+
+		private List<Notes> noteList = new List<Notes>();
+
 		public MainWindow()
 		{
 			InitializeComponent();
+
+			MainMenuCanvas.Visibility = Visibility.Visible;
+			AddNoteCanvas.Visibility = Visibility.Hidden;
+			ReadNotesCanvas.Visibility = Visibility.Hidden;
+		}
+
+		private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			if (e.ButtonState == MouseButtonState.Pressed)
+			{
+				this.DragMove();
+			}
+		}
+
+		private void AddNoteButtonClick(object sender, RoutedEventArgs e)
+		{
+			MainMenuCanvas.Visibility = Visibility.Hidden;
+			AddNoteCanvas.Visibility = Visibility.Visible;
+		}
+
+		private void AddNoteConfirmClick(object sender, RoutedEventArgs e)
+		{
+			MainMenuCanvas.Visibility = Visibility.Visible;
+			AddNoteCanvas.Visibility = Visibility.Hidden;
+
+			if (buttonCount < 5)
+			{
+				String buttonText = NoteNameText.Text == "New note " ?
+					NoteNameText.Text + Convert.ToString(buttonCount + 1) :
+					NoteNameText.Text;
+
+				noteList.Add(new Notes(buttonText, NoteDescriptionText.Text));
+
+				Button newNote = new Button
+				{
+					Content = buttonText,
+					Width = 340,
+					Height = 55,
+					FontSize = 18,
+
+				};
+
+				newNote.Style = (Style)FindResource("MenuButton");
+
+				double topOffset = 160 + buttonCount * 65;
+				Canvas.SetLeft(newNote, 10);
+				Canvas.SetTop(newNote, topOffset);
+				MainMenuCanvas.Children.Add(newNote);
+
+				NoteNameText.Text = "New note ";
+				NoteDescriptionText.Text = "Note description";
+
+				notesKeyDict[newNote] = noteList[buttonCount];
+
+				newNote.Click += (s, args) => ReadNote(newNote);
+
+				buttonCount++;
+			}
+		}
+
+		private void ReadNote(Button index)
+		{ 
+			ReadNotesCanvas.Visibility = Visibility.Visible;
+			MainMenuCanvas.Visibility = Visibility.Hidden;
+
+			NoteNameText_Read.Text = notesKeyDict[index].Name;
+			NoteDescriptionText_Read.Text = notesKeyDict[index].Description;
+
+		}
+
+		private void BackToMenuClick(object sender, RoutedEventArgs e)
+		{
+			ReadNotesCanvas.Visibility= Visibility.Hidden;
+			MainMenuCanvas.Visibility = Visibility.Visible;
+	
+		}
+	}
+
+	public class Notes
+	{
+		private string _name;
+		private string _description;
+		
+		public string Name
+		{
+			get => _name;
+			set {
+				if (Name == "")
+				{
+					throw new Exception("Name must contain at least 1 char");
+				}
+				else { _name = value; }
+			}
+		}
+		public string Description { get => _description; set => _description = value; }
+
+		public Notes(string name, string description) 
+		{
+			Name = name;
+			_description = description;	
 		}
 	}
 }

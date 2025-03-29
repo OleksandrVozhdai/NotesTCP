@@ -5,8 +5,254 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NotesTCP"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+         Title="MainWindow" 
+        Height="640  " 
+        Width="360 "
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStartupLocation="CenterScreen"
+        MouseDown="Window_MouseDown">
+    <Window.Resources>
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
+        <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
+        <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
+        <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
+        <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
+        <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
+        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+        <Style x:Key="MenuButton" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#FF365AE8" Offset="0"/>
+                        <GradientStop Color="#FF8051C5" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+            <Setter Property="Foreground" Value="#FFF7D7F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontFamily" Value="Microsoft Sans Serif"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border CornerRadius="15" x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
 
-    </Grid>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="FocusVisual1">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="Button.Static.Background1" Color="#FFDDDDDD"/>
+        <SolidColorBrush x:Key="Button.Static.Border1" Color="#FF707070"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Background1" Color="#FFBEE6FD"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Border1" Color="#FF3C7FB1"/>
+        <SolidColorBrush x:Key="Button.Pressed.Background1" Color="#FFC4E5F6"/>
+        <SolidColorBrush x:Key="Button.Pressed.Border1" Color="#FF2C628B"/>
+        <SolidColorBrush x:Key="Button.Disabled.Background1" Color="#FFF4F4F4"/>
+        <SolidColorBrush x:Key="Button.Disabled.Border1" Color="#FFADB2B5"/>
+        <SolidColorBrush x:Key="Button.Disabled.Foreground1" Color="#FF838383"/>
+        <Style x:Key="AddButton" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual1}"/>
+            <Setter Property="Background" Value="{StaticResource Button.Static.Background1}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border1}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="50" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background1}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border1}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background1}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border1}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground1}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+
+    <Border CornerRadius="52">
+        <Border CornerRadius="35" >
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="1,0">
+                    <GradientStop Color="#FF400570" Offset="0"/>
+                    <GradientStop Color="#FF5142F6" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Canvas Name="NotesTCPCanvas">
+                <Canvas x:Name ="MainMenuCanvas" d:IsHidden="True">
+                    <Rectangle Height="133" RadiusX="32" RadiusY="32"  Width="360" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Rectangle.Effect>
+                            <DropShadowEffect BlurRadius="9" ShadowDepth="14" Direction="260" Color="#FF80179A" Opacity="0.61"/>
+                        </Rectangle.Effect>
+                        <Rectangle.Fill>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="1,-1" Opacity="0.8">
+                                <GradientStop Color="#FF500D4C" Offset="1"/>
+                                <GradientStop Color="#FFD20D46" Offset="0"/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Button Name="NotesButton" BorderThickness="0" Style="{DynamicResource MenuButton}" Content="Notes" Height="34" Canvas.Left="32" Canvas.Top="85" Width="128" FontSize="18" FontFamily="Microsoft Sans Serif" Foreground="#FFF7D7F0">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,2" StartPoint="1,-1">
+                                <GradientStop Color="#FFA7687D"/>
+                                <GradientStop Color="#FF7E72FC" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button Name="ToDoButton" BorderThickness="0" Style="{DynamicResource MenuButton}" Content="To-Do" Height="34" Canvas.Left="200" Canvas.Top="85" Width="128" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" FontFamily="Microsoft Sans Serif" Foreground="#FFF7D7F0">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,2" StartPoint="1,-1">
+                                <GradientStop Color="#FFA7687D"/>
+                                <GradientStop Color="#FF7E72FC" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button Click="AddNoteButtonClick" BorderBrush="#FF170067" BorderThickness="2" Style="{DynamicResource AddButton}" Height="100" Canvas.Left="130" Canvas.Top="502.8" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="90" FontWeight="Bold" Panel.ZIndex="3">
+                        <Label Content="+" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,-26,0,0" Foreground="#FF4B1FFF" >
+                        </Label>
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF365AE8"/>
+                                <GradientStop Color="#FF8051C5" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                </Canvas>
+
+                <Canvas x:Name="AddNoteCanvas">
+                    <Rectangle StrokeThickness="0" RadiusX="32" RadiusY="32" Height="92" Canvas.Left="20.2" Stroke="Black" Canvas.Top="28.4" Width="318" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="1,-1">
+                                <GradientStop Color="#FF5F7FE3"/>
+                                <GradientStop Color="#FFA679E8" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Rectangle StrokeThickness="0" RadiusX="32" RadiusY="32" Height="319" Canvas.Left="20.2" Stroke="Black" Canvas.Top="152.4" Width="318" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="1,-1">
+                                <GradientStop Color="#FF5F7FE3" Offset="1"/>
+                                <GradientStop Color="#FFA679E8" Offset="0"/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Button Click="AddNoteConfirmClick" BorderBrush="#FF170067" BorderThickness="2" Style="{DynamicResource AddButton}" Height="100" Canvas.Left="130" Canvas.Top="502.8" Width="100" FontSize="90" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF365AE8"/>
+                                <GradientStop Color="#FF8051C5" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <Label  Content="OK" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#FF4B1FFF" FontSize="50" />
+                    </Button>
+                    <TextBox Name ="NoteNameText" BorderThickness="0" Foreground="#FFF7D7F0" Background="Transparent" TextAlignment="Center" Height="47" Canvas.Left="27.5" TextWrapping="Wrap" Text="New note " Canvas.Top="59.067" Width="305" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBox Name ="NoteDescriptionText" BorderThickness="0" Foreground="#FFF7D7F0" Background="Transparent" TextAlignment="Center" Height="276" Canvas.Left="27.5" TextWrapping="Wrap" Text="Note description" Canvas.Top="174.267" Width="305" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+
+                </Canvas>
+
+                <Canvas x:Name="ReadNotesCanvas">
+                    <Rectangle StrokeThickness="0" RadiusX="32" RadiusY="32" Height="92" Canvas.Left="20.2" Stroke="Black" Canvas.Top="28.4" Width="318" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="1,-1">
+                                <GradientStop Color="#FF5F7FE3"/>
+                                <GradientStop Color="#FFA679E8" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Rectangle StrokeThickness="0" RadiusX="32" RadiusY="32" Height="319" Canvas.Left="20.2" Stroke="Black" Canvas.Top="152.4" Width="318" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="1,-1">
+                                <GradientStop Color="#FF5F7FE3" Offset="1"/>
+                                <GradientStop Color="#FFA679E8" Offset="0"/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Button x:Name ="BackToMenuButton" Click="BackToMenuClick" BorderBrush="#FF170067" BorderThickness="2" Style="{DynamicResource AddButton}" Height="100" Canvas.Left="130" Canvas.Top="502.8" Width="100" FontSize="80" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF365AE8"/>
+                                <GradientStop Color="#FF8051C5" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <Label  Content="Back" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#FF4B1FFF" FontSize="35" />
+                    </Button>
+                    <TextBox x:Name ="NoteNameText_Read" BorderThickness="0" Foreground="#FFF7D7F0" Background="Transparent" TextAlignment="Center" Height="47" Canvas.Left="27.5" TextWrapping="Wrap" Text="null" Canvas.Top="59.067" Width="305" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBox x:Name ="NoteDescriptionText_Read" BorderThickness="0" Foreground="#FFF7D7F0" Background="Transparent" TextAlignment="Center" Height="276" Canvas.Left="27.5" TextWrapping="Wrap" Text="null" Canvas.Top="174.267" Width="305" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                </Canvas>
+                <Rectangle Fill ="#FF4B2A53" Panel.ZIndex="-1" Height="4" Stroke="#FF170067" Canvas.Top="554" Width="369" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Canvas.Left="-4.14">
+                    <Rectangle.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform AngleX="-0.167"/>
+                            <RotateTransform/>
+                            <TranslateTransform X="-0.264"/>
+                        </TransformGroup>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+            </Canvas>
+
+        </Border>
+    </Border>
+
 </Window>
