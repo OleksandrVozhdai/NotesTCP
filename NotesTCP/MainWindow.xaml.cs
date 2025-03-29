@@ -38,7 +38,14 @@ namespace NotesTCP
 		{
 			if (e.ButtonState == MouseButtonState.Pressed)
 			{
-				this.DragMove();
+				try
+				{
+					this.DragMove();
+				}
+				catch (Exception InvalidOperationException)
+				{
+					Console.WriteLine(InvalidOperationException.Message);
+				}
 			}
 		}
 
@@ -63,7 +70,7 @@ namespace NotesTCP
 
 				Button newNote = new Button
 				{
-					Content = buttonText,
+					Content = noteList[buttonCount].Name,
 					Width = 340,
 					Height = 55,
 					FontSize = 18,
@@ -95,14 +102,12 @@ namespace NotesTCP
 
 			NoteNameText_Read.Text = notesKeyDict[index].Name;
 			NoteDescriptionText_Read.Text = notesKeyDict[index].Description;
-
 		}
 
 		private void BackToMenuClick(object sender, RoutedEventArgs e)
 		{
 			ReadNotesCanvas.Visibility= Visibility.Hidden;
 			MainMenuCanvas.Visibility = Visibility.Visible;
-	
 		}
 	}
 
@@ -115,11 +120,18 @@ namespace NotesTCP
 		{
 			get => _name;
 			set {
-				if (Name == "")
+				try
 				{
-					throw new Exception("Name must contain at least 1 char");
+					if (value.Length == 0)
+					{
+						throw new Exception("Name must contain at least 1 char");
+					}
+					else { _name = value; }
+				} catch(Exception Exception)
+				{
+					_name = "New note";
+					Console.WriteLine("InvalidNameError");
 				}
-				else { _name = value; }
 			}
 		}
 		public string Description { get => _description; set => _description = value; }
